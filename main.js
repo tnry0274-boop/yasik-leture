@@ -1,37 +1,67 @@
 const nightFoods = [
-  { name: "치킨", image: "https://source.unsplash.com/600x400/?fried-chicken" },
-  { name: "떡볶이", image: "https://source.unsplash.com/600x400/?tteokbokki" },
-  { name: "족발", image: "https://source.unsplash.com/600x400/?pork-hock" },
-  { name: "보쌈", image: "https://source.unsplash.com/600x400/?boiled-pork" },
-  { name: "피자", image: "https://source.unsplash.com/600x400/?pizza" },
-  { name: "햄버거", image: "https://source.unsplash.com/600x400/?burger" },
-  { name: "라면", image: "https://source.unsplash.com/600x400/?ramen" },
-  { name: "닭강정", image: "https://source.unsplash.com/600x400/?korean-fried-chicken" },
-  { name: "마라탕", image: "https://source.unsplash.com/600x400/?spicy-hotpot" },
-  { name: "곱창", image: "https://source.unsplash.com/600x400/?grilled-intestines" },
-  { name: "순대국", image: "https://source.unsplash.com/600x400/?soup" },
-  { name: "초밥", image: "https://source.unsplash.com/600x400/?sushi" },
-  { name: "김치찌개", image: "https://source.unsplash.com/600x400/?kimchi-stew" },
-  { name: "부대찌개", image: "https://source.unsplash.com/600x400/?stew" },
-  { name: "감자탕", image: "https://source.unsplash.com/600x400/?pork-bone-soup" },
-  { name: "삼겹살", image: "https://source.unsplash.com/600x400/?samgyeopsal" },
-  { name: "닭발", image: "https://source.unsplash.com/600x400/?spicy-chicken" },
-  { name: "쭈꾸미볶음", image: "https://source.unsplash.com/600x400/?stir-fried-octopus" },
-  { name: "오돌뼈", image: "https://source.unsplash.com/600x400/?spicy-pork" },
-  { name: "해장국", image: "https://source.unsplash.com/600x400/?hangover-soup" },
-  { name: "비빔국수", image: "https://source.unsplash.com/600x400/?bibim-noodles" },
-  { name: "냉면", image: "https://source.unsplash.com/600x400/?cold-noodles" },
-  { name: "우동", image: "https://source.unsplash.com/600x400/?udon" },
-  { name: "돈까스", image: "https://source.unsplash.com/600x400/?tonkatsu" },
-  { name: "제육볶음", image: "https://source.unsplash.com/600x400/?spicy-pork-stirfry" },
-  { name: "찜닭", image: "https://source.unsplash.com/600x400/?braised-chicken" },
-  { name: "회덮밥", image: "https://source.unsplash.com/600x400/?raw-fish-rice" },
-  { name: "타코야끼", image: "https://source.unsplash.com/600x400/?takoyaki" },
-  { name: "핫도그", image: "https://source.unsplash.com/600x400/?hotdog" },
-  { name: "토스트", image: "https://source.unsplash.com/600x400/?toast" },
-  { name: "김밥", image: "https://source.unsplash.com/600x400/?gimbap" },
-  { name: "샌드위치", image: "https://source.unsplash.com/600x400/?sandwich" }
+  { name: "치킨", keyword: "fried-chicken" },
+  { name: "떡볶이", keyword: "tteokbokki" },
+  { name: "족발", keyword: "pork-hock" },
+  { name: "보쌈", keyword: "boiled-pork" },
+  { name: "피자", keyword: "pizza" },
+  { name: "햄버거", keyword: "burger" },
+  { name: "라면", keyword: "ramen" },
+  { name: "닭강정", keyword: "korean-fried-chicken" },
+  { name: "마라탕", keyword: "spicy-hotpot" },
+  { name: "곱창", keyword: "grilled-intestines" },
+  { name: "순대국", keyword: "soup" },
+  { name: "초밥", keyword: "sushi" },
+  { name: "김치찌개", keyword: "kimchi-stew" },
+  { name: "부대찌개", keyword: "stew" },
+  { name: "감자탕", keyword: "pork-bone-soup" },
+  { name: "삼겹살", keyword: "samgyeopsal" },
+  { name: "닭발", keyword: "spicy-chicken" },
+  { name: "쭈꾸미볶음", keyword: "stir-fried-octopus" },
+  { name: "오돌뼈", keyword: "spicy-pork" },
+  { name: "해장국", keyword: "hangover-soup" },
+  { name: "비빔국수", keyword: "bibim-noodles" },
+  { name: "냉면", keyword: "cold-noodles" },
+  { name: "우동", keyword: "udon" },
+  { name: "돈까스", keyword: "tonkatsu" },
+  { name: "제육볶음", keyword: "spicy-pork-stirfry" },
+  { name: "찜닭", keyword: "braised-chicken" },
+  { name: "회덮밥", keyword: "raw-fish-rice" },
+  { name: "타코야끼", keyword: "takoyaki" },
+  { name: "핫도그", keyword: "hotdog" },
+  { name: "토스트", keyword: "toast" },
+  { name: "김밥", keyword: "gimbap" },
+  { name: "샌드위치", keyword: "sandwich" }
 ];
+
+const LOCAL_IMAGE_BASE = "images";
+const FALLBACK_WIDTH = 600;
+const FALLBACK_HEIGHT = 400;
+
+function buildMenuImage(menu) {
+  const slug = menu.keyword || "default";
+  return `${LOCAL_IMAGE_BASE}/${slug}.svg`;
+}
+
+function buildFallbackImage(menu) {
+  const label = menu.name;
+  const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="${FALLBACK_WIDTH}" height="${FALLBACK_HEIGHT}" viewBox="0 0 ${FALLBACK_WIDTH} ${FALLBACK_HEIGHT}">
+      <defs>
+        <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#ffe7c2"/>
+          <stop offset="100%" stop-color="#ffb36b"/>
+        </linearGradient>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#bg)"/>
+      <circle cx="90" cy="90" r="60" fill="rgba(255,255,255,0.5)"/>
+      <circle cx="520" cy="330" r="80" fill="rgba(255,255,255,0.35)"/>
+      <text x="50%" y="52%" dominant-baseline="middle" text-anchor="middle" font-size="42" font-family="Pretendard, 'Apple SD Gothic Neo', sans-serif" fill="#7a3b00">${label}</text>
+      <text x="50%" y="68%" dominant-baseline="middle" text-anchor="middle" font-size="18" font-family="Pretendard, 'Apple SD Gothic Neo', sans-serif" fill="#7a3b00">이미지를 불러오지 못했어요</text>
+    </svg>
+  `.trim();
+
+  return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+}
 
 const voteStorageKey = "nightFoodVotes";
 let currentBestPick = null;
@@ -112,9 +142,15 @@ function renderNightFoods() {
 
     const img = document.createElement("img");
     img.className = "menu-image";
-    img.src = menu.image;
+    img.src = buildMenuImage(menu);
     img.alt = `${menu.name} 사진`;
     img.loading = "lazy";
+    img.decoding = "async";
+    img.referrerPolicy = "no-referrer";
+    img.onerror = () => {
+      img.onerror = null;
+      img.src = buildFallbackImage(menu);
+    };
 
     const name = document.createElement("span");
     name.className = "menu-name";
